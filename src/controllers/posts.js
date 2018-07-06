@@ -20,13 +20,17 @@ function getOne(req, res, next) {
 
 function create(req, res, next) {
   const { title, content } = req.body
-  
+  if(!title || !content){
+    return next({
+      status: 404,
+      message: `Title and content are required`
+    })
+  }
   const data = model.create(title, content)
-  if (data.errors) {
+  if (!data) {
     return next({
       status: 400,
       message: `Could not create new post`,
-      errors: data.errors
     })
   }
   res.status(201).json({ data })
@@ -35,12 +39,17 @@ function create(req, res, next) {
 function update(req, res, next) {
   const id = req.params.id
   const { title, content } = req.body
-  const data = model.update(id, title, content)
-  if (data.errors) {
+  if(!title || !content){
     return next({
       status: 404,
-      message: `Could not update new post`,
-      errors: data.errors
+      message: `Title and content are required`
+    })
+  }
+  const data = model.update(id, title, content)
+  if (!data) {
+    return next({
+      status: 400,
+      message: `Could not update new post due to wrong ID of ${id}`,
     })
   }
   res.status(200).json({ data })
@@ -49,14 +58,13 @@ function update(req, res, next) {
 function remove(req, res, next) {
   const id = req.params.id
   const data = model.remove(id)
-  if (data.errors) {
+  if (!data) {
     return next({
       status: 404,
-      message: `Could not delete post`,
-      errors: data.errors
+      message: `Could not delete post due to wrong ID of ${id}`,
     })
   }
-  res.status(204).json({ data })
+  res.status(200).json({ data })
 }
 
 module.exports = {
