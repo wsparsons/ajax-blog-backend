@@ -19,7 +19,7 @@ app.use('/posts', postsRoute)
 //// DEFAULT ROUTE
 app.use(function(res, req, next) {
   const status = 404
-  const message = `Could not ${req.method} ${req.url}`
+  const message = `Route not found`
   next({status, message})
 })
 

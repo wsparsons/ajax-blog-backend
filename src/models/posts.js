@@ -11,16 +11,31 @@ function getOne(id){
 }
 
 function create(title, content){
-  const post = { id: uuid(), title, content }
-  posts.push(post)
+  const errors = []
+  let response
+  if (!title) {
+    errors.push('Title is required')
+    response = { errors }
+  } else if (!content) {
+    errors.push('Content is required')
+    response = { errors }
+  } else {
+    const post = { id: uuid(), title, content }
+    posts.push(post)
+    response = post
+  }
+  return response
 }
 
 function update(id, title, content){
   const errors = []
-  let response
   const post = posts.find(post => post.id === id)
-  if(!post){
-    errors.push(`Cannot find post with ID of ${id}`)
+  let response
+  if (!post) {
+    errors.push(`Could not find post with ID of ${id}`)
+    response = { errors }
+  } else if (!title || !content){
+    errors.push(`Title and content are required`)
     response = { errors }
   } else {
     post.title = title
@@ -32,10 +47,10 @@ function update(id, title, content){
 
 function remove(id){
   const errors = []
-  let response
   const post = posts.find(post => post.id === id)
+  let response
   if(!post){
-    errors.push(`Cannot find post with id of ${id}`)
+    errors.push(`Could not find post with id of ${id}`)
     response = { errors }
   } else {
     response = post
