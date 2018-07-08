@@ -19,14 +19,14 @@ function getOne(req, res, next) {
 }
 
 function create(req, res, next) {
-  const { title, content } = req.body
-  if(!title || !content){
+  const { name, recipe } = req.body
+  if(!name || !recipe){
     return next({
       status: 404,
-      message: `Title and content are required`
+      message: `Name and recipe are required`
     })
   }
-  const data = model.create(title, content)
+  const data = model.create(name, recipe)
   if (!data) {
     return next({
       status: 400,
@@ -38,14 +38,14 @@ function create(req, res, next) {
 
 function update(req, res, next) {
   const id = req.params.id
-  const { title, content } = req.body
-  if(!title || !content){
+  const { name, recipe } = req.body
+  if(!name || !recipe){
     return next({
       status: 404,
-      message: `Title and content are required`
+      message: `Name and recipe are required`
     })
   }
-  const data = model.update(id, title, content)
+  const data = model.update(id, name, recipe)
   if (!data) {
     return next({
       status: 400,

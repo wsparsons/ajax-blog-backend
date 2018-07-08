@@ -10,16 +10,16 @@ function getOne(id){
   return posts.find(post => post.id === id)
 }
 
-function create(title, content){
-    const post = { id: uuid(), title, content }
+function create(name, recipe){
+    const post = { id: uuid(), name, recipe}
     posts.push(post)
     return post
 }
 
-function update(id, title, content){
+function update(id, name, recipe){
   const post = posts.find(post => post.id === id)
-  post.title = title
-  post.content = content
+  post.name = name
+  post.recipe = recipe
   return post
 }
 
