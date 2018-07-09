@@ -49,7 +49,7 @@ function update(req, res, next) {
   if (!data) {
     return next({
       status: 404,
-      message: `Could not update new post due to wrong ID of ${id}`,
+      message: `Could not update post due to wrong ID of ${id}`,
     })
   }
   res.status(200).json({ data })
