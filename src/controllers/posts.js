@@ -46,10 +46,10 @@ function update(req, res, next) {
     })
   }
   const data = model.update(id, name, recipe)
-  if (!data) {
+  if(data.errors){
     return next({
       status: 404,
-      message: `Could not update post due to wrong ID of ${id}`,
+      message: data.errors
     })
   }
   res.status(200).json({ data })
@@ -58,10 +58,10 @@ function update(req, res, next) {
 function remove(req, res, next) {
   const id = req.params.id
   const data = model.remove(id)
-  if (!data) {
+  if (data.errors) {
     return next({
       status: 404,
-      message: `Could not delete post due to wrong ID of ${id}`,
+      message: data.errors
     })
   }
   res.status(200).json({ data })
