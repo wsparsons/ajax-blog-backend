@@ -27,12 +27,6 @@ function create(req, res, next) {
     })
   }
   const data = model.create(name, recipe)
-  if (!data) {
-    return next({
-      status: 404,
-      message: `Could not create new post`,
-    })
-  }
   res.status(201).json({ data })
 }
 
