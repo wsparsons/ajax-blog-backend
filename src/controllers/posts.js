@@ -22,14 +22,14 @@ function create(req, res, next) {
   const { name, recipe } = req.body
   if(!name || !recipe){
     return next({
-      status: 404,
+      status: 400,
       message: `Name and recipe are required`
     })
   }
   const data = model.create(name, recipe)
   if (!data) {
     return next({
-      status: 400,
+      status: 404,
       message: `Could not create new post`,
     })
   }
@@ -41,14 +41,14 @@ function update(req, res, next) {
   const { name, recipe } = req.body
   if(!name || !recipe){
     return next({
-      status: 404,
+      status: 400,
       message: `Name and recipe are required`
     })
   }
   const data = model.update(id, name, recipe)
   if (!data) {
     return next({
-      status: 400,
+      status: 404,
       message: `Could not update new post due to wrong ID of ${id}`,
     })
   }
