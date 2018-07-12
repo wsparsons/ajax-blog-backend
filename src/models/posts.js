@@ -10,7 +10,7 @@ function getOne(id) {
   const errors = []
   let response;
   const getPost = posts.find(post => post.id === id)
-  if (!post) {
+  if (!getPost) {
     errors.push(`Could not find post with ID of ${id}`)
     response = {
       errors
