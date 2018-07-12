@@ -6,15 +6,13 @@ const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
-app.use(morgan('dev'))
+if (process.env.NODE_ENV !== 'development') app.use(morgan('dev'))
 
 app.disable('x-powered-by')
-
 
 //// ROUTE
 const postsRoute = require('./src/routes/posts')
 app.use('/posts', postsRoute)
-
 
 //// DEFAULT ROUTE
 app.use(function(res, req, next) {
@@ -26,16 +24,10 @@ app.use(function(res, req, next) {
 //// ERROR HANDLING
 app.use((err, req, res, next) => {
   console.error(err)
-  const errorMessage = {}
+  const status = err.status || 500
+  const message = err.message || 'Internal Server Error'
 
-  if (process.env.NODE_ENV !== 'development' && err.stack){
-    errorMessage.stack = err.stack
-  }
-
-  errorMessage.status = err.status || 500
-  errorMessage.message = err.message || 'Internal Server Error'
-
-  res.status(errorMessage.status).send(errorMessage)
+  res.status(status).json({ error: err })
 })
 
 //// STARTING SERVER

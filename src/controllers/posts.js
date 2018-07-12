@@ -8,50 +8,57 @@ function getAll(req, res, next) {
 
 function getOne(req, res, next) {
   const id = req.params.id
-  const data = model.getOne(id)
-  if (!data) {
+  const result = model.getOne(id)
+
+  if (result.errors) {
     return next({
       status: 404,
-      message: `Could not find post with ID of ${id}`
+      message: result.errors
     })
   }
-  res.status(200).json({ data })
+  res.status(200).json({ data: result })
 }
 
 function create(req, res, next) {
-  const { name, recipe } = req.body
-  if(!name || !recipe){
+  const body = req.body
+  const result = model.create(body)
+
+  if(result.errors){
     return next({
       status: 400,
-      message: `Name and recipe are required`
+      message: result.erros
     })
+    return result
   }
-  const data = model.create(name, recipe)
-  res.status(201).json({ data })
+  res.status(201).json({ data: result })
 }
 
 function update(req, res, next) {
   const id = req.params.id
-  const { name, recipe } = req.body
-  if(!name || !recipe){
+  const body = req.body
+
+  if(!body){
     return next({
       status: 400,
-      message: `Name and recipe are required`
+      message: `Bad Request`
     })
   }
-  const data = model.update(id, name, recipe)
-  if(data.errors){
+
+  const result = model.update(id, body)
+
+  if(result.errors){
     return next({
       status: 404,
-      message: data.errors
+      message: result.errors
     })
   }
-  res.status(200).json({ data })
+  res.status(200).json({ data: result })
 }
 
 function remove(req, res, next) {
   const id = req.params.id
   const data = model.remove(id)
+  
   if (data.errors) {
     return next({
       status: 404,
